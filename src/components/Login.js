@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import { updateProfile } from 'firebase/auth';
 import { useDispatch } from 'react-redux';
 import { addUser } from '../utils/userSlice';
+import { BG_URL } from '../utils/constants';
 
 const Login = () => {
 	const navigate = useNavigate();
@@ -102,10 +103,7 @@ const Login = () => {
 		<div className="relative">
 			<Header />
 
-			<img
-				className="w-screen h-screen overflow-hidden"
-				src="https://images.pexels.com/photos/3473569/pexels-photo-3473569.jpeg"
-			/>
+			<img className="w-screen h-screen overflow-hidden" src={BG_URL} />
 
 			<form
 				onSubmit={(e) => e.preventDefault()}

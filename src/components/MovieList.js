@@ -3,7 +3,7 @@ import MovieCard from './MovieCard';
 
 const MovieList = ({ title, movies }) => {
 	if (!movies || movies.length === 0) return null;
-	console.log(movies);
+	//	console.log(movies);
 	return (
 		<div className="overflow-x-scroll p-2 bg-black text-white hide-scrollbar">
 			<h1 className="text-2xl font-bold pb-1">{title}</h1>

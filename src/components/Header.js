@@ -7,13 +7,15 @@ import { onAuthStateChanged } from 'firebase/auth';
 
 import { useDispatch } from 'react-redux';
 import { addUser, removeUser } from '../utils/userSlice';
-import { APP_ICON, LOGO } from '../utils/constants';
+import { APP_ICON, LOGO, SUPPORTED_LANGUAGES } from '../utils/constants';
+import { toggleGptSearchView } from '../utils/gptSlice';
+import { changeLanguage } from '../utils/configSlice';
 
 const Header = () => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const user = useSelector((store) => store.user);
-
+	const showGptSearch = useSelector((store) => store.gpt.showGptSearch);
 	const handleSignOut = () => {
 		signOut(auth)
 			.then(() => {
@@ -51,6 +53,15 @@ const Header = () => {
 		};
 	}, []);
 
+	const handleGptSearchClick = () => {
+		dispatch(toggleGptSearchView());
+	};
+
+	const handleLanguageChange = (e) => {
+		//console.log(e.target.value);
+		dispatch(changeLanguage(e.target.value));
+	};
+
 	return (
 		<div
 			className="absolute top-0 left-0 w-full flex justify-between items-center px-8 py-4 z-50 
@@ -63,11 +74,33 @@ bg-gradient-to-b from-black via-black/70 to-transparent"
 			/>
 
 			{user && (
-				<div className="flex justify-around align-center mt">
-					<img src={APP_ICON} className="w-24 p-4 cursor-pointer" />
+				<div className="flex justify-around align-center text-center mb-6 pb-4 items-start">
+					{showGptSearch && (
+						<select
+							onChange={handleLanguageChange}
+							className="px-4 mt-6 bg-green-400 mr-2 h-12 text-black rounded"
+						>
+							{SUPPORTED_LANGUAGES.map((lang) => (
+								<option value={lang.identifier} key={lang.identifier}>
+									{lang.name}
+								</option>
+							))}
+						</select>
+					)}
+
+					<img
+						src={APP_ICON}
+						className="w-14 mt-6 cursor-pointer rounded mx-2"
+					/>
+					<button
+						onClick={handleGptSearchClick}
+						className="bg-purple-600 cursor-pointer h-12 px-4 mt-6 mr-2 text-white rounded"
+					>
+						{showGptSearch ? 'Home' : 'Gpt Search'}
+					</button>
 					<button
 						onClick={handleSignOut}
-						className="bg-red-600 cursor-pointer h-12 px-2 mt-6 text-white rounded"
+						className="bg-red-600 cursor-pointer h-12 px-4 mt-6 text-white rounded"
 					>
 						Sign Out
 					</button>
